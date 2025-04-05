@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use PhpParser\Node\Stmt\TryCatch;
+use Throwable;
 
 class PostController extends Controller
 {
@@ -24,9 +26,16 @@ class PostController extends Controller
 
     public function detail($id){
         // $posts = $this->getPosts();
-        $post = Post::find($id);
+        try{
+            $post = Post::findOrFiail($id);
+            return view('posts.detail', compact('post'));
+        }catch(\Throwable $th){
+            //throw $th;
+            
+        }
+        
         // $post = collect($posts)-> firstWhere('id',$id);
-        return view('posts.detail', compact('post'));
+       
     }
     public function oldUrl() {
         return redirect()->route('new_url');
